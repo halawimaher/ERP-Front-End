@@ -3,10 +3,10 @@ import { Table } from 'reactstrap'
 
 function EmployeeProjects() {
 
-     const [project, setReport] = useState([]);
+     const [report, setReport] = useState([]);
 
      const projectReport = async () => {
-          await fetch("http://localhost:8000/api/projects", {
+          await fetch("http://localhost:8000/api/kpis", {
                method: 'GET',
                headers: { 'Authorization': 'bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTYxMDcxMzI3OSwiZXhwIjoxNjEwNzE2ODc5LCJuYmYiOjE2MTA3MTMyNzksImp0aSI6IkFxbFU2c2ZBNmU1WU9RYTgiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.gMVjvzsIRnVc-xxGhpfzIce_DxMZ2C6j0IIZgoqrUY0' }
           })
@@ -25,7 +25,7 @@ function EmployeeProjects() {
           projectReport();
      }, []);
 
-     console.log(project)
+     console.log(report)
 
 
      return (
@@ -33,23 +33,26 @@ function EmployeeProjects() {
                <Table className="tablesorter" responsive>
                     <thead className="text-primary">
                          <tr>
-                              <th>KPI Name</th>
-                              <th>Min</th>
-                              <th>Max</th>
-                              <th>Description</th>
+                              <th>Employee Name</th>
+                              <th>Old Evaluation</th>
+                              <th>New Evaluation</th>
+                              <th>Change</th>
                          </tr>
                     </thead>
-                    {project.map((post) =>
-                         <tbody>
-                              <tr>
-                                   <td>{post.name}</td>
-                                   <td>{post.min_value}</td>
-                                   <td>{post.max_value}</td>
-                                   <td>{post.description}</td>
-                              </tr>
-                              <tr></tr>
-                         </tbody>
-                    )}
+                    {report.map((post, key) => (
+            <tbody key={key}>
+              <tr key={key}>
+                <td> {post.employees.first_name}  {post.employees.last_name}</td>
+                <td>{post.Kpi.map((kpi) =>kpi.is_current === 0 ? kpi.evaluation : '')}</td>
+                <td>{post.Kpi.map((kpi) =>kpi.is_current === 1 ? kpi.evaluation : '')}</td>
+                <td>{post.Kpi.map((kpi) =>{
+                     Kpi.is_current == 0 && Kpi
+                     {oldEval > 0 && newEval > 0 ? (oldEval - newEval) / 100 : ''}}
+                     )}</td>
+              </tr>
+              <tr></tr>
+            </tbody>
+        ))}
                </Table>
           </div>
      )

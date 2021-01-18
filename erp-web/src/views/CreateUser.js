@@ -20,9 +20,9 @@ function CreateUser() {
   const [employee, setEmployee] = useState([]);
 
   const getEmployees = async () => {
-    await fetch("http://localhost:8000/api/employees/1", {
+    await fetch("http://localhost:8000/api/employees", {
       method: 'GET',
-      headers: { 'Authorization': 'bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTYxMDUzNDYyMCwiZXhwIjoxNjEwNTM4MjIwLCJuYmYiOjE2MTA1MzQ2MjAsImp0aSI6IllQaXdBTE8xbHYyTGtFc20iLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.XZSsNRJt2WwveGZPj07JXzt5wZbPchOvt76VwBQ96pI' }
+      headers: { 'Authorization': 'bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTYxMDYwOTEwNiwiZXhwIjoxNjEwNjEyNzA2LCJuYmYiOjE2MTA2MDkxMDYsImp0aSI6InR1TVoybWV3VDB0azZWWTAiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.jar0pT7w82jM5cADoH9rCZmUBq_8-1jVDu7O5a9czlo' }
     })
       .then((res) => res.json())
       .then(

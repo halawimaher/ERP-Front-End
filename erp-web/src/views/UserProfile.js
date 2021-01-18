@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // reactstrap components
 import {
@@ -15,7 +15,33 @@ import {
      Col,
 } from "reactstrap";
 
-function CreateUser() {
+function UserProfile() {
+     
+     const [employee, setEmployee] = useState({employee: '', team: [], project: []});
+     
+     const getEmployees = async () => {
+          const piece = window.document.location.pathname;
+          const id = piece.split("/")[3]
+          let url = 'http://localhost:8000/api/employees/'
+          url += id
+       await fetch(url, {
+         method: 'GET',
+         headers: { 'Authorization': 'bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTYxMDcxMzI3OSwiZXhwIjoxNjEwNzE2ODc5LCJuYmYiOjE2MTA3MTMyNzksImp0aSI6IkFxbFU2c2ZBNmU1WU9RYTgiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.gMVjvzsIRnVc-xxGhpfzIce_DxMZ2C6j0IIZgoqrUY0' }
+       })
+         .then((res) => res.json())
+         .then(
+           (result) => {
+             setEmployee(result);
+           },
+           (error) => {
+             console.log(error);
+           }
+         );
+     };
+
+     useEffect(() => {
+       getEmployees();
+     }, []);
 
 
      return (
@@ -32,28 +58,36 @@ function CreateUser() {
                                              <Row>
                                                   <Col className="pr-md-1" md="5">
                                                        <FormGroup>
-                                                            <label>Department</label>
+                                                            <label>First Name</label>
                                                             <Input
-                                                                 placeholder="department"
+                                                                 className="text-white"
+                                                                 placeholder="First Name"
                                                                  type="text"
+                                                                 value={employee.employee.first_name}               
+                                                                 disabled                                                  
                                                             />
                                                        </FormGroup>
                                                   </Col>
                                                   <Col className="pr-md-1" md="5">
                                                        <FormGroup>
-                                                            <label>Position</label>
+                                                            <label>Last Name</label>
                                                             <Input
-                                                                 placeholder="position"
+                                                                 className="text-white"
+                                                                 placeholder="Last Name"
                                                                  type="text"
+                                                                 value={employee.employee.last_name}       
+                                                                 disabled                                                          
                                                             />
                                                        </FormGroup>
                                                   </Col>
                                                   <Col className="px-md-1" md="3">
                                                        <FormGroup>
                                                             <label>Username</label>
-                                                            <Input
+                                                            <Input className="text-white"
                                                                  placeholder="Username"
                                                                  type="text"
+                                                                 value={employee.employee.username}   
+                                                                 disabled                                                              
                                                             />
                                                        </FormGroup>
                                                   </Col>
@@ -62,27 +96,7 @@ function CreateUser() {
                                                             <label htmlFor="exampleInputEmail1">
                                                                  Email address
                         </label>
-                                                            <Input placeholder="mhalawi@email.com" type="email" />
-                                                       </FormGroup>
-                                                  </Col>
-                                             </Row>
-                                             <Row>
-                                                  <Col className="pr-md-1" md="6">
-                                                       <FormGroup>
-                                                            <label>First Name</label>
-                                                            <Input
-                                                                 placeholder="Name"
-                                                                 type="text"
-                                                            />
-                                                       </FormGroup>
-                                                  </Col>
-                                                  <Col className="pl-md-1" md="6">
-                                                       <FormGroup>
-                                                            <label>Last Name</label>
-                                                            <Input
-                                                                 placeholder="Last Name"
-                                                                 type="text"
-                                                            />
+                                                            <Input className="text-white" placeholder="mhalawi@email.com" type="email" value={employee.employee.email} disabled/>
                                                        </FormGroup>
                                                   </Col>
                                              </Row>
@@ -90,9 +104,11 @@ function CreateUser() {
                                                   <Col md="12">
                                                        <FormGroup>
                                                             <label>Address</label>
-                                                            <Input
+                                                            <Input className="text-white"
                                                                  placeholder="Home Address"
                                                                  type="text"
+                                                                 value={employee.employee.address}                 
+                                                                 disabled                                                
                                                             />
                                                        </FormGroup>
                                                   </Col>
@@ -101,65 +117,61 @@ function CreateUser() {
                                                   <Col className="pr-md-1" md="4">
                                                        <FormGroup>
                                                             <label>City</label>
-                                                            <Input
+                                                            <Input className="text-white"
                                                                  placeholder="City"
                                                                  type="text"
+                                                                 value={employee.employee.city}               
+                                                                 disabled                                                  
                                                             />
                                                        </FormGroup>
                                                   </Col>
                                                   <Col className="px-md-1" md="4">
                                                        <FormGroup>
                                                             <label>Country</label>
-                                                            <Input
+                                                            <Input className="text-white"
                                                                  placeholder="Country"
                                                                  type="text"
+                                                                 value={employee.employee.country}          
+                                                                 disabled                                                       
                                                             />
                                                        </FormGroup>
                                                   </Col>
                                                   <Col className="pl-md-1" md="4">
                                                        <FormGroup>
                                                             <label>Phone</label>
-                                                            <Input placeholder="phone" type="number" />
+                                                            <Input className="text-white" placeholder="phone" type="number" value={employee.employee.phone} disabled/>
                                                        </FormGroup>
                                                   </Col>
                                              </Row>
                                              <Row>
                                                   <Col className="pr-md-1" md="4">
                                                        <FormGroup>
-                                                            <label>Team 1</label>
-                                                            <Input
+                                                            <label>Team</label>
+                                                            {employee.team.map((item, key) =>
+                                                            <Input 
+                                                                 key={key}
+                                                                 className="text-white"
                                                                  placeholder="Team"
                                                                  type="text"
+                                                                 value= {item.name}        
+                                                                 disabled                                                     
                                                             />
+                                                            )}  
                                                        </FormGroup>
                                                   </Col>
                                                   <Col className="px-md-1" md="4">
-                                                       <FormGroup>
-                                                            <label>Team 2</label>
-                                                            <Input
-                                                                 placeholder="Team"
-                                                                 type="text"
-                                                            />
-                                                       </FormGroup>
-                                                  </Col>
-                                             </Row>
-                                             <Row>
-                                                  <Col className="pr-md-1" md="4">
                                                        <FormGroup>
                                                             <label>Project</label>
-                                                            <Input
+                                                            {employee.project.map((item, key) =>
+                                                            <Input 
+                                                                 key={key}
+                                                                 className="text-white"
                                                                  placeholder="Project"
                                                                  type="text"
+                                                                 value= {item.name}       
+                                                                 disabled                                                   
                                                             />
-                                                       </FormGroup>
-                                                  </Col>
-                                                  <Col className="px-md-1" md="4">
-                                                       <FormGroup>
-                                                            <label>Manager</label>
-                                                            <Input
-                                                                 placeholder="Manager"
-                                                                 type="text"
-                                                            />
+                                                            )}  
                                                        </FormGroup>
                                                   </Col>
                                              </Row>
@@ -180,27 +192,23 @@ function CreateUser() {
                                              <div className="block block-two" />
                                              <div className="block block-three" />
                                              <div className="block block-four" />
-                                             <a href="#pablo" onClick={(e) => e.preventDefault()}>
                                                   <img
-                                                       alt="..."
+                                                       alt="user avatar"
                                                        className="avatar"
-                                                       src={require("assets/img/avatar.webp").default}
+                                                       src={`http://localhost:8000/storage/${employee.employee.image_path}`}
                                                   />
-                                                  <h5 className="title">Maher Halawi</h5>
-                                             </a>
-                                             <p className="description">Lead Dev</p>
                                         </div>
                                    </CardBody>
                                    <CardFooter>
                                         <div className="button-container">
                                              <Button className="btn-icon btn-round" color="twitter">
-                                                  <i class="fas fa-chart-bar"></i>
+                                                  <i className="fas fa-chart-bar"></i>
                                              </Button>
                                              <Button className="btn-icon btn-round" color="twitter">
-                                                  <i class="fas fa-info-circle"></i>
+                                                  <i className="fas fa-info-circle"></i>
                                              </Button>
                                              <Button className="btn-icon btn-round" color="twitter">
-                                                  <i class="fas fa-users-cog"></i>
+                                                  <i className="fas fa-users-cog"></i>
                                              </Button>
                                         </div>
                                    </CardFooter>
@@ -212,4 +220,4 @@ function CreateUser() {
      );
 }
 
-export default CreateUser;
+export default UserProfile;

@@ -14,10 +14,11 @@ import {
      Col,
    } from 'reactstrap';
 
-function EmployeeKpiReports() {
+function EvaluatedKpi() {
 
      const [report, setReport] = useState([]);
-     const [employee, setKPI] = useState([]);
+     const [kpi, setKPI] = useState([]);
+     const [calc, setCalc] = useState()
 
      const projectReport = async () => {
           await fetch("http://localhost:8000/api/kpis", {
@@ -37,7 +38,7 @@ function EmployeeKpiReports() {
      };
 
      const getKPI = () => {
-          fetch('http://localhost:8000/api/employees', {
+          fetch('http://localhost:8000/api/kpis', {
             method: 'GET',
             headers: {
               Authorization:
@@ -49,6 +50,7 @@ function EmployeeKpiReports() {
             .then(
               (result) => {
                 setKPI(result.sort((a,b) => a.employee_id - b.employee_id) );
+                console.log(result)
               },
               (error) => {
                 console.log(error);
@@ -58,7 +60,7 @@ function EmployeeKpiReports() {
 
         const handleClick = (e) => {
           e.preventDefault()
-          fetch('http://localhost:8000/api/employees', {
+          fetch('http://localhost:8000/api/kpis', {
             method: 'GET',
             headers: {
               Authorization:
@@ -83,7 +85,22 @@ function EmployeeKpiReports() {
                getKPI();
      }, []);
 
-     console.log(employee)
+
+     // const setCalc = () => {
+     //      let oldEval = 0
+     //      let empId = 0
+     //      let newEval = 0
+     //      let diff = 0
+     //      kpi.map((value, key) => {
+     //           if(value.is_current == 1) {
+     //                oldEval = value.evaluation
+     //           }else if(value.is_current ==0 ){
+     //                newEval= value.evaluation
+     //           }
+     //           empId = value.employee.id
+     //      })
+     // }
+     console.log(kpi)
 
 
      return (
@@ -92,28 +109,37 @@ function EmployeeKpiReports() {
         <thead className='text-primary'>
           <tr>
           <th>Employee Name</th>
-            <th>Project Name</th>
-            <th>Team</th>
-            <th>Role</th>
+            <th>KPI Name</th>          
+            <th>Evaluation</th>
           </tr>
         </thead>
-        {employee.map((post, key) => (
+        {/* {kpi.map((post, key) => (
+            <tbody key={key}>
+              <tr key={key}>
+              <td>{post.employee.first_name}</td>
+                <td> {post.name}</td> 
+                <td>{post.evaluation}</td>
+              </tr>
+              <tr></tr>
+            </tbody>
+        ))} */}
+
+{kpi.map((post, key) => (
             <tbody key={key}>
               <tr key={key}>
                 <td> {post.employee.first_name}  {post.employee.last_name}</td>
-                <td>{post.project.map((project) => <tr>{project.name}</tr>)}</td>
-                <td>{post.team.map((team) =><tr>{team.name}</tr>)}</td>
-                <td>{post.role.map((role) =><tr>{role.role}</tr>)}</td>
+                {/* <td>{post.kpi.map((kpi) =>kpi.is_current === 0 ? kpi.evaluation : '')}</td>
+                <td>{post.kpi.map((kpi) =>kpi.is_current === 1 ? kpi.evaluation : '')}</td> */}
               </tr>
               <tr></tr>
             </tbody>
         ))}
       </Table>
-      <Button className='p-md-2' md='3' color='warning' type='submit' onClick={handleClick}  />
+      <Button className='p-md-2' md='3' color='warning' type='submit' onClick={handleClick} />
       <Button className='p-md-2' md='3' color='warning' type='submit' />
       <Button className='p-md-2' md='3' color='warning' type='submit' />
           </div>
      )
 }
 
-export default EmployeeKpiReports
+export default EvaluatedKpi

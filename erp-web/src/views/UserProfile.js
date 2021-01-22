@@ -16,18 +16,46 @@ import {
 } from "reactstrap";
 
 function UserProfile() {
+
+     const piece = window.document.location.pathname;
+     const id = piece.split("/")[3]
      
      const [employee, setEmployee] = useState({employee: '', team: [], project: []});
+     const [newTeam, gatherTeams] = useState({});
+     const [team, setTeams] = useState([])
+     const [project, setProjects] = useState([])
+
+     const createTeam =  (e) => {
+          fetch('http://localhost:8000/api/assign', {
+               method: 'POST',
+               headers: {
+                 'Content-Type': 'application/json',
+                 'Authorization':
+                   'bearer ' +
+                   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTYxMDcxMzI3OSwiZXhwIjoxNjEwNzE2ODc5LCJuYmYiOjE2MTA3MTMyNzksImp0aSI6IkFxbFU2c2ZBNmU1WU9RYTgiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.gMVjvzsIRnVc-xxGhpfzIce_DxMZ2C6j0IIZgoqrUY0'
+               },
+               body: JSON.stringify({...newTeam }),
+          }).then(
+              (result) => {
+               window.location.reload();
+          });
+     };
+
+     const onChange = (e) => {
+          gatherTeams({
+            ...newTeam, 
+            employee_id: id,
+            [e.target.name]: e.target.value,
+        });
+        };
      
      const getEmployees = async () => {
-          const piece = window.document.location.pathname;
-          const id = piece.split("/")[3]
           let url = 'http://localhost:8000/api/employees/'
           url += id
        await fetch(url, {
          method: 'GET',
          headers: { 'Authorization': 'bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTYxMDcxMzI3OSwiZXhwIjoxNjEwNzE2ODc5LCJuYmYiOjE2MTA3MTMyNzksImp0aSI6IkFxbFU2c2ZBNmU1WU9RYTgiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.gMVjvzsIRnVc-xxGhpfzIce_DxMZ2C6j0IIZgoqrUY0' }
-       })
+       }, )
          .then((res) => res.json())
          .then(
            (result) => {
@@ -39,10 +67,45 @@ function UserProfile() {
          );
      };
 
+     const getTeams = async () => {
+          fetch('http://localhost:8000/api/teams', {
+         method: 'GET',
+         headers: { 'Authorization': 'bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTYxMDcxMzI3OSwiZXhwIjoxNjEwNzE2ODc5LCJuYmYiOjE2MTA3MTMyNzksImp0aSI6IkFxbFU2c2ZBNmU1WU9RYTgiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.gMVjvzsIRnVc-xxGhpfzIce_DxMZ2C6j0IIZgoqrUY0' }
+       }, )
+         .then((res) => res.json())
+         .then(
+           (result) => {
+             setTeams(result);
+           },
+           (error) => {
+             console.log(error);
+           }
+         );
+     };
+
+     const GetProjects = async () => {
+          fetch('http://localhost:8000/api/projects', {
+         method: 'GET',
+         headers: { 'Authorization': 'bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTYxMDcxMzI3OSwiZXhwIjoxNjEwNzE2ODc5LCJuYmYiOjE2MTA3MTMyNzksImp0aSI6IkFxbFU2c2ZBNmU1WU9RYTgiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.gMVjvzsIRnVc-xxGhpfzIce_DxMZ2C6j0IIZgoqrUY0' }
+       }, )
+         .then((res) => res.json())
+         .then(
+           (result) => {
+             setProjects(result);
+           },
+           (error) => {
+             console.log(error);
+           }
+         );
+     };
+
      useEffect(() => {
-       getEmployees();
+       getEmployees()
+       getTeams()
+       GetProjects()
      }, []);
 
+console.log(employee)
 
      return (
           <>
@@ -146,32 +209,39 @@ function UserProfile() {
                                              <Row>
                                                   <Col className="pr-md-1" md="4">
                                                        <FormGroup>
-                                                            <label>Team</label>
-                                                            {employee.team.map((item, key) =>
-                                                            <Input 
-                                                                 key={key}
-                                                                 className="text-white"
-                                                                 placeholder="Team"
-                                                                 type="text"
-                                                                 value= {item.name}        
-                                                                 disabled                                                     
-                                                            />
-                                                            )}  
+                                                            <label>Team   </label>
+                                                            <Input type="select" name="team_id" 
+                                                            value={team.team_id}
+                                                            onChange={onChange}
+                                                            id="exampleSelect">
+                                                                 {team.map((item, key) => 
+                                                                   <option key={item.id} value={item.id}>{item.name}</option>
+                                                                 )}
+                                                                 </Input>
                                                        </FormGroup>
                                                   </Col>
                                                   <Col className="px-md-1" md="4">
                                                        <FormGroup>
-                                                            <label>Project</label>
-                                                            {employee.project.map((item, key) =>
-                                                            <Input 
-                                                                 key={key}
-                                                                 className="text-white"
-                                                                 placeholder="Project"
-                                                                 type="text"
-                                                                 value= {item.name}       
-                                                                 disabled                                                   
-                                                            />
-                                                            )}  
+                                                            <label>Project  </label>
+                                                            <Input type="select" name="project_id" 
+                                                            value={project.project_id} 
+                                                            onChange={onChange}
+                                                            id="exampleSelect">
+                                                       {project.map((item, key) => 
+                                                         <option key={item.id} value={item.id}>{item.name}</option>
+                                                       )}
+                                                       </Input>
+                                                       </FormGroup>
+                                                  </Col>
+                                                  <Col className="px-md-1" md="4">
+                                                       <FormGroup>
+                                                            <label>Role</label>
+                                                            <Input className="text-white" name="role" type="text"  
+                                                            value={newTeam.role}  
+                                                            onChange={onChange}
+                                                            required
+                                                            /> 
+                                                       <Button onClick={createTeam}>Add</Button>
                                                        </FormGroup>
                                                   </Col>
                                              </Row>

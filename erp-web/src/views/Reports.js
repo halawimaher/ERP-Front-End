@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
+import EmployeeKpiReports from '../components/EmployeeKpiReport'
 import EmployeeProjects from '../components/EmployeeProjects'
+import EvaluatedKpi from '../components/EvaluatedKpi'
 
 import {
      Button,
@@ -24,6 +26,22 @@ function Reports() {
      const [dropdownOpen, setDropdownOpen] = useState(false);
 
      const toggle = () => setDropdownOpen(prevState => !prevState);
+     const [option, setOption] = useState(0)
+
+     const handleClick = (e) => {
+          e.preventDefault()
+          setOption(0)
+     }
+
+     const toggleClick = (e) =>{
+          e.preventDefault()
+          setOption(1)
+     }
+
+     const evaluate = (e) => {
+          e.preventDefault()
+          setOption(2)
+     }
 
      return (
           <div className="content">
@@ -44,14 +62,12 @@ function Reports() {
                                                                  Select Report
                                                             </DropdownToggle>
                                                             <DropdownMenu>
-                                                                 <DropdownItem >Overall KPIs</DropdownItem>
+                                                                 <DropdownItem onClick={toggleClick} >Overall KPIs</DropdownItem>
                                                                  <DropdownItem divider />
-                                                                 <DropdownItem>KPI Change</DropdownItem>
-                                                                 <DropdownItem divider />
-                                                                 <DropdownItem>Employee Projects</DropdownItem>
+                                                                 <DropdownItem onClick={handleClick}>Employee Projects</DropdownItem>
                                                             </DropdownMenu>
-                                                            <Button className="btn-fill" color="secondary" type="submit">
-                                                                 Run Report
+                                                            <Button className="btn-fill" color="secondary" onClick={evaluate}>
+                                                                 Evaluate
                                                             </Button>
                                                        </Dropdown>
                                                   </FormGroup>
@@ -62,7 +78,7 @@ function Reports() {
                          </Card>
                     </Col>
                </Row>
-               <EmployeeProjects />
+               {option == 0 ? <EmployeeProjects /> : option == 1 ? <EmployeeKpiReports /> : <EvaluatedKpi /> }
           </div>
      )
 }

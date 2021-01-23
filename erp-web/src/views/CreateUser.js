@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 // reactstrap components
 import {
@@ -13,32 +13,14 @@ import {
   Input,
   Row,
   Col,
+  Dropdown,
+  DropdownToggle,
+  DropdownItem,
+  DropdownMenu,
 } from "reactstrap";
 
 function CreateUser() {
 
-  const [employee, setEmployee] = useState([]);
-
-  const getEmployees = async () => {
-    await fetch("http://localhost:8000/api/employees", {
-      method: 'GET',
-      headers: { 'Authorization': 'bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTYxMDYwOTEwNiwiZXhwIjoxNjEwNjEyNzA2LCJuYmYiOjE2MTA2MDkxMDYsImp0aSI6InR1TVoybWV3VDB0azZWWTAiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.jar0pT7w82jM5cADoH9rCZmUBq_8-1jVDu7O5a9czlo' }
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setEmployee(result);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  };
-
-  console.log(employee)
-  useEffect(() => {
-    getEmployees();
-  }, []);
 
   return (
     <>
@@ -139,20 +121,7 @@ function CreateUser() {
                   <Row>
                     <Col className="pr-md-1" md="4">
                       <FormGroup>
-                        <label>Team 1</label>
-                        <Input
-                          placeholder="Team"
-                          type="text"
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col className="px-md-1" md="4">
-                      <FormGroup>
-                        <label>Team 2</label>
-                        <Input
-                          placeholder="Team"
-                          type="text"
-                        />
+                        
                       </FormGroup>
                     </Col>
                   </Row>

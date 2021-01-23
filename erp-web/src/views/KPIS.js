@@ -10,15 +10,15 @@ import {
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
   Table,
-  CardText,
   FormGroup,
   Form,
   Input,
   Row,
   Col,
 } from 'reactstrap';
+
+import Pagination from "react-js-pagination";
 
 function KPIS(props) {
 
@@ -54,9 +54,9 @@ function KPIS(props) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
+        'Authorization':
           'bearer ' +
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTYxMDcxMzI3OSwiZXhwIjoxNjEwNzE2ODc5LCJuYmYiOjE2MTA3MTMyNzksImp0aSI6IkFxbFU2c2ZBNmU1WU9RYTgiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.gMVjvzsIRnVc-xxGhpfzIce_DxMZ2C6j0IIZgoqrUY0',
+          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTYxMDcxMzI3OSwiZXhwIjoxNjEwNzE2ODc5LCJuYmYiOjE2MTA3MTMyNzksImp0aSI6IkFxbFU2c2ZBNmU1WU9RYTgiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.gMVjvzsIRnVc-xxGhpfzIce_DxMZ2C6j0IIZgoqrUY0'
       },
       body: JSON.stringify({...newKpi }),
     }).then((result) => {
@@ -93,6 +93,8 @@ function KPIS(props) {
         }
       );
   };
+
+  
 
   useEffect(() => {
     getKPI();
@@ -160,13 +162,13 @@ function KPIS(props) {
                         value={newKpi.description}
                         onChange= {onChange}
                       />
-                                            <Input
+                                            {/* <Input
                         placeholder='Add a Description'
                         type='text'
                         name='employee_id'
                         value={newKpi.employee_id}
                         onChange= {onChange}
-                      />
+                      /> */}
                     </FormGroup>
                   </Col>
                 </Row>
@@ -182,19 +184,17 @@ function KPIS(props) {
             <th>Min</th>
             <th>Max</th>
             <th>Created On</th>
-            <th>Employee ID</th>
             <th>Description</th>
           </tr>
         </thead>
         {kpi.map((post, key) => (
             <tbody key={key}>
-            {post.Kpi.map((item, key) =>
               <tr key={key}>
-                <td> {item.name}</td>
-                <td>{item.min_value}</td>
-                <td>{item.max_value}</td>
-                <td>{item.created}</td>
-                <td>{item.employee_id}</td>
+                <td> {post.name}</td>
+                <td>{post.min_value}</td>
+                <td>{post.max_value}</td>
+                <td>{post.created}</td>
+                <td>{post.description}</td>
                 <td>
                   <Button className='p-md-2' md='3' color='warning' type='submit' onClick={deleteKPI}>
                     X
@@ -206,8 +206,6 @@ function KPIS(props) {
                   </Button>
                 </td>
               </tr>
-            )}
-              <tr></tr>
             </tbody>
         ))}
       </Table>

@@ -101,7 +101,9 @@ function EmployeeKpiReports() {
           </tr>
         </thead>
         {kpi.map((post, key) => (
-            <tbody key={key}>
+             post.is_current=== 1 ?
+           <tbody key={key}>
+
               <tr key={key}>
               <td>{post.employee.first_name}</td>
                 <td> {post.name}</td>
@@ -111,7 +113,8 @@ function EmployeeKpiReports() {
                 <td>{post.evaluation}</td>
               </tr>
               <tr></tr>
-            </tbody>
+
+            </tbody>: null
         ))}
       </Table>
       <Button className='p-md-2' md='3' color='warning' type='submit' onClick={handleClick} />

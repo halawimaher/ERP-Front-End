@@ -38,7 +38,7 @@ function EvaluatedKpi() {
      };
 
      const getKPI = () => {
-          fetch('http://localhost:8000/api/kpis', {
+          fetch('http://localhost:8000/api/evaluate', {
             method: 'GET',
             headers: {
               Authorization:
@@ -49,13 +49,16 @@ function EvaluatedKpi() {
             .then((res) => res.json())
             .then(
               (result) => {
-                setKPI(result.sort((a,b) => a.employee_id - b.employee_id) );
+                setKPI(result);
                 console.log(result)
               },
               (error) => {
                 console.log(error);
               }
             );
+
+         console.log("kpis", kpi);
+
         };
 
         const handleClick = (e) => {
@@ -100,7 +103,7 @@ function EvaluatedKpi() {
      //           empId = value.employee.id
      //      })
      // }
-     console.log(kpi)
+     console.log( " kpis ", kpi)
 
 
      return (
@@ -127,11 +130,11 @@ function EvaluatedKpi() {
 {kpi.map((post, key) => (
             <tbody key={key}>
               <tr key={key}>
-                <td> {post.employee.first_name}  {post.employee.last_name}</td>
-                {/* <td>{post.kpi.map((kpi) =>kpi.is_current === 0 ? kpi.evaluation : '')}</td>
-                <td>{post.kpi.map((kpi) =>kpi.is_current === 1 ? kpi.evaluation : '')}</td> */}
+                <td> {post.employee}</td>
+                 <td>{post.name}</td>
+                <td>{parseFloat( post.fraction)} %</td>
               </tr>
-              <tr></tr>
+              <tr/>
             </tbody>
         ))}
       </Table>
